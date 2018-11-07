@@ -1,0 +1,4 @@
+<button oncklick="myFunction()">click me</button>
+document.getElementById("myBtn").addEventListener("click", function(){
+    document.getElementById("demo").innerHTML = "button";
+});
