@@ -2,32 +2,44 @@
 import password from './config';
 import style from '../css/style.css';
 /* eslint-enable no-unused-vars */
-// TODO: kunna välja ett användarnamn
-// TODO: tar emot meddelande från webbsocket
-// TODO: konverterar från json till javascript
-// TODO: en enklare dokumentation
 // TODO: ett chatt user interface
+// skicka meddelande med enter
+// varje användare ska få en egen färg
+// se vilken tid meddelandet skickas
+
 const connection = new WebSocket('ws://104.248.143.87:1337');
 
 connection.onmessage = message => {
   const textEl = document.getElementById('logger');
   const obj = JSON.parse(message.data);
-  console.log(obj);
-  console.log(obj.type);
+  console.log(obj.data.time);
 
-  if (obj.type === 'heartbeat') {
-    textEl.textcontent += `${obj.data}, `;
+  if (obj.type === 'history') {
+    const history = obj.data;
+
+    history.forEach(element => {
+      console.log(element.text);
+      printmsg(element.text, element.author, element.time);
+    });
   }
-  console.log(obj.data.text);
+
+  if (obj.type === 'color') {
+    const input = document.getElementById('inputtext');
+    input.setAttribute('placeholder', 'chattmessage');
+  }
+
+  printmsg(obj.data.text, obj.data.author, obj.data.time);
+};
+
+function printmsg(printer, author, time) {
   const chattmessageDiv = document.getElementById('chattmessage');
   const div = document.getElementById('send');
   const chattmessage = document.importNode(chattmessageDiv, true);
   const clone = document.importNode(chattmessage.content, true);
-  clone.textContent = obj.data.text;
+  clone.textContent = ` ${new Date(time)} ${author} ${printer}`;
   const paste = document.getElementById('paste');
   paste.appendChild(clone);
-};
-
+}
 connection.onclose = () => {
   console.log('uppkoppling nedstängd...');
 };
@@ -41,6 +53,5 @@ chatt.addEventListener('click', () => {
     key: password
   };
   const jsonOBj = JSON.stringify(obj);
-  console.log(jsonOBj);
   connection.send(jsonOBj);
 });
