@@ -1,0 +1,30 @@
+
+
+.text{
+display: block;
+color: aliceblue
+}
+
+body{
+background-color:#0e000002;
+
+}
+
+#paste {
+  height: 500px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.site-container1{ 
+  width: 1200px; 
+  margin: 0 auto; 
+  background-color:#050000;
+  border: 6px solid rgb(33, 34, 33);
+  text-align : left;
+}
+.jamal{
+  display: flex;
+  
+}
+

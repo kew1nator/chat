@@ -2,10 +2,8 @@
 import password from './config';
 import style from '../css/style.css';
 /* eslint-enable no-unused-vars */
-// TODO: ett chatt user interface
 // skicka meddelande med enter
 // varje användare ska få en egen färg
-// se vilken tid meddelandet skickas
 
 const connection = new WebSocket('ws://104.248.143.87:1337');
 
@@ -19,7 +17,7 @@ connection.onmessage = message => {
 
     history.forEach(element => {
       console.log(element.text);
-      printmsg(element.text, element.author, element.time);
+      printmsg(element.text, element.author, element.time, element.color);
     });
   }
 
@@ -28,15 +26,18 @@ connection.onmessage = message => {
     input.setAttribute('placeholder', 'chattmessage');
   }
 
-  printmsg(obj.data.text, obj.data.author, obj.data.time);
+  printmsg(obj.data.text, obj.data.author, obj.data.time, obj.data.color);
 };
 
-function printmsg(printer, author, time) {
+function printmsg(printer, author, time, color) {
   const chattmessageDiv = document.getElementById('chattmessage');
   const div = document.getElementById('send');
   const chattmessage = document.importNode(chattmessageDiv, true);
-  const clone = document.importNode(chattmessage.content, true);
-  clone.textContent = ` ${new Date(time)} ${author} ${printer}`;
+  const clone = document.importNode(chattmessage.content.firstElementChild, true);
+
+  const jad = new Date(time).toString();
+  clone.textContent = ` ${jad.substr(0, 23)} ${author} ${printer}`;
+  clone.style = `color: ${color}`;
   const paste = document.getElementById('paste');
   paste.appendChild(clone);
 }
