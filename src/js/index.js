@@ -3,7 +3,6 @@ import password from './config';
 import style from '../css/style.css';
 /* eslint-enable no-unused-vars */
 // skicka meddelande med enter
-// varje användare ska få en egen färg
 
 const connection = new WebSocket('ws://104.248.143.87:1337');
 
@@ -44,15 +43,25 @@ function printmsg(printer, author, time, color) {
 connection.onclose = () => {
   console.log('uppkoppling nedstängd...');
 };
-
-const chatt = document.getElementById('chatt');
-chatt.addEventListener('click', () => {
+const clickenter = event => {
+  event.preventDefault();
+  console.log('test');
   const textinput = document.getElementById('inputtext');
   const obj = {
     type: 'message',
     data: textinput.value,
     key: password
   };
+  console.log(obj);
   const jsonOBj = JSON.stringify(obj);
   connection.send(jsonOBj);
+};
+const chatt = document.getElementById('chatt');
+chatt.addEventListener('click', clickenter);
+window.addEventListener('keydown', event => {
+  console.log(event.code);
+  if (event.code === `Enter`) {
+    console.log('test2');
+    clickenter(event);
+  }
 });
