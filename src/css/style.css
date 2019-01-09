@@ -17,7 +17,8 @@ background-color:#0e000002;
 }
 
 .site-container1{ 
-  width: 1200px; 
+  width: auto;
+  height: auto; 
   margin: 0 auto; 
   background-color:#050000;
   border: 6px solid rgb(33, 34, 33);
@@ -29,11 +30,11 @@ background-color:#0e000002;
 }
 
 .btn{
-background-color: blue;
+background-color: rgb(255, 0, 0);
 
 }
 
 .abok{
-  width: 1400px; 
-  height: 25px;
+  width: 100%; 
+  height: auto;
 }

@@ -15,7 +15,6 @@ connection.onmessage = message => {
     const history = obj.data;
 
     history.forEach(element => {
-      console.log(element.text);
       printmsg(element.text, element.author, element.time, element.color);
     });
   }
@@ -24,8 +23,9 @@ connection.onmessage = message => {
     const input = document.getElementById('inputtext');
     input.setAttribute('placeholder', 'chattmessage');
   }
-
-  printmsg(obj.data.text, obj.data.author, obj.data.time, obj.data.color);
+  if (obj.type === 'message') {
+    printmsg(obj.data.text, obj.data.author, obj.data.time, obj.data.color);
+  }
 };
 
 function printmsg(printer, author, time, color) {
@@ -35,7 +35,7 @@ function printmsg(printer, author, time, color) {
   const clone = document.importNode(chattmessage.content.firstElementChild, true);
 
   const jad = new Date(time).toString();
-  clone.textContent = ` ${jad.substr(0, 23)} ${author} ${printer}`;
+  clone.textContent = ` ${jad.substr(0, 23)} ${author}: ${printer}`;
   clone.style = `color: ${color}`;
   const paste = document.getElementById('paste');
   paste.appendChild(clone);
@@ -55,6 +55,7 @@ const clickenter = event => {
   console.log(obj);
   const jsonOBj = JSON.stringify(obj);
   connection.send(jsonOBj);
+  textinput.value = '';
 };
 const chatt = document.getElementById('chatt');
 chatt.addEventListener('click', clickenter);
